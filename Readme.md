@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Олег Котляров](https://up.htmlacademy.ru/javascript/21/user/791071).
-* Наставник: `Неизвестно`.
+* Наставник: [Анна Цуканова](https://up.htmlacademy.ru/javascript/21/user/594461).
 
 ---
 
