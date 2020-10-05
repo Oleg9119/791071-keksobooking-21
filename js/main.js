@@ -22,9 +22,14 @@ const AdsData = {
 
 const MAP_WIDTH = document.querySelector(`.map`).clientWidth;
 
-const MapPins = {
+const PinSize = {
   WIDTH: 50,
   HEIGHT: 70
+};
+
+const PinOffset = {
+  X: PinSize.WIDTH / 2,
+  Y: PinSize.HEIGHT
 };
 
 const getRandomProperty = (array) => {
@@ -40,15 +45,17 @@ const getRandomSlicedArray = (array, min, max) => {
 };
 
 const getRandomAd = (adIndex) => {
-  const locationX = getRandomValue(AdsData.LOCATION_X_MIN, MAP_WIDTH);
-  const locationY = getRandomValue(AdsData.LOCATION_Y_MIN, AdsData.LOCATION_Y_MAX);
+  const location = {
+    x: getRandomValue(AdsData.LOCATION_X_MIN, MAP_WIDTH),
+    y: getRandomValue(AdsData.LOCATION_Y_MIN, AdsData.LOCATION_Y_MAX)
+  };
   const ad = {
     author: {
       avatar: `img/avatars/user0${adIndex}.png`
     },
     offer: {
       title: `Заголовок предложения ${adIndex}`,
-      address: `${locationX}, ${locationY}`,
+      address: `${location.x}, ${location.y}`,
       price: getRandomValue(AdsData.PRICE_MIN, AdsData.PRICE_MAX),
       type: getRandomProperty(AdsData.TYPES),
       rooms: getRandomValue(AdsData.ROOMS_MIN_QUANTITY, AdsData.ROOMS_MAX_QUANTITY),
@@ -59,10 +66,7 @@ const getRandomAd = (adIndex) => {
       description: `Описание ${adIndex}`,
       photos: getRandomSlicedArray(AdsData.PHOTOS, AdsData.PHOTOS_MIN_QUANTITY, AdsData.PHOTOS.length)
     },
-    location: {
-      x: locationX,
-      y: locationY
-    }
+    location
   };
   return ad;
 };
@@ -84,14 +88,12 @@ const createAds = (randomAdsList) => {
   const mapPinsList = document.querySelector(`.map__pins`);
   const mapPinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const mapPinFragment = document.createDocumentFragment();
-  const mapPinOffsetX = MapPins.WIDTH / 2;
-  const mapPinOffsetY = MapPins.HEIGHT;
 
   for (let i = 0; i < AdsData.QUANTITY; i++) {
     const clonedMapPin = mapPinTemplate.cloneNode(true);
     const clonedMapPinImage = clonedMapPin.querySelector(`img`);
-    clonedMapPin.style.left = `${randomAdsList[i].location.x - mapPinOffsetX}px`;
-    clonedMapPin.style.top = `${randomAdsList[i].location.y - mapPinOffsetY}px`;
+    clonedMapPin.style.left = `${randomAdsList[i].location.x - PinOffset.X}px`;
+    clonedMapPin.style.top = `${randomAdsList[i].location.y - PinOffset.Y}px`;
     clonedMapPinImage.src = `${randomAdsList[i].author.avatar}`;
     clonedMapPinImage.alt = `${randomAdsList[i].offer.title}`;
     mapPinFragment.appendChild(clonedMapPin);
