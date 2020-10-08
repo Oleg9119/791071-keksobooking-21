@@ -42,7 +42,7 @@ const getRandomValue = (min, max) => {
 };
 
 const getRandomSlicedArray = (array, min, max) => {
-  return array.slice(0, getRandomValue(min, max));
+  return array.slice(0, getRandomValue(min, max + 1));
 };
 
 const getRandomAd = (adIndex) => {
@@ -102,14 +102,35 @@ const createAds = (randomAdsList) => {
   return mapPinsList;
 };
 
-const createCard = (randomAds) => {
-  const firstAd = randomAds[0];
+const getLocalType = (type) => {
+  const types = {
+    palace: `Дворец`,
+    flat: `Квартира`,
+    house: `Дом`,
+    bungalow: `Бунгало`
+  };
+  return types[type];
+};
+
+const renderCardPhotos = (clonedPhotos, photosSources) => {
+  const cardPhotoFragment = document.createDocumentFragment();
+  const templatePhoto = clonedPhotos.querySelector(`img`);
+  clonedPhotos.removeChild(templatePhoto);
+  for (let i = 0; i < photosSources.length; i++) {
+    const clonedPhoto = templatePhoto.cloneNode(true);
+    clonedPhoto.src = `${photosSources[i]}`;
+    cardPhotoFragment.appendChild(clonedPhoto);
+  }
+  return cardPhotoFragment;
+};
+
+const createCard = (firstAd) => {
   const mapFiltersContainer = document.querySelector(`.map__filters-container`);
   const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
   const mapCardFragment = document.createDocumentFragment();
   const clonedMapCard = mapCardTemplate.cloneNode(true);
 
-  const clonedMapCardData = {
+  const ClonedMapCardData = {
     title: clonedMapCard.querySelector(`.popup__title`),
     address: clonedMapCard.querySelector(`.popup__text--address`),
     price: clonedMapCard.querySelector(`.popup__text--price`),
@@ -122,37 +143,18 @@ const createCard = (randomAds) => {
     avatar: clonedMapCard.querySelector(`.popup__avatar`)
   };
 
-  const types = {
-    palace: `Дворец`,
-    flat: `Квартира`,
-    house: `Дом`,
-    bungalow: `Бунгало`
-  };
+  ClonedMapCardData.title.textContent = `${firstAd.offer.title}`;
+  ClonedMapCardData.address.textContent = `${firstAd.offer.address}`;
+  ClonedMapCardData.price.textContent = `${firstAd.offer.price}₽/ночь`;
+  ClonedMapCardData.type.textContent = `${getLocalType(firstAd.offer.type)}`;
+  ClonedMapCardData.capacity.textContent = `${firstAd.offer.rooms} комнаты для ${firstAd.offer.guests} гостей`;
+  ClonedMapCardData.time.textContent = `Заезд после ${firstAd.offer.checkin}, выезд до ${firstAd.offer.checkout}`;
+  ClonedMapCardData.features.textContent = `${firstAd.offer.features}`;
+  ClonedMapCardData.description.textContent = `${firstAd.offer.description}`;
 
-  const adTypesRu = [];
-  for (let i = 0; i < AdsData.TYPES.length; i++) {
-    adTypesRu.push(types[AdsData.TYPES[i]]);
-  }
-
-  clonedMapCardData.title.textContent = `${firstAd.offer.title}`;
-  clonedMapCardData.address.textContent = `${firstAd.offer.address}`;
-  clonedMapCardData.price.textContent = `${firstAd.offer.price}₽/ночь`;
-  clonedMapCardData.type.textContent = `${adTypesRu[0]}`;
-  clonedMapCardData.capacity.textContent = `${firstAd.offer.rooms} комнаты для ${firstAd.offer.guests} гостей`;
-  clonedMapCardData.time.textContent = `Заезд после ${firstAd.offer.checkin}, выезд до ${firstAd.offer.checkout}`;
-  clonedMapCardData.features.textContent = `${firstAd.offer.features}`;
-  clonedMapCardData.description.textContent = `${firstAd.offer.description}`;
-
-  const mapCardPhotoFragment = document.createDocumentFragment();
-  for (let i = 0; i < randomAds[0].offer.photos.length; i++) {
-    const clonedMapCardPhoto = clonedMapCard.querySelector(`.popup__photo`);
-    if (clonedMapCardPhoto) {
-      clonedMapCardPhoto.src = `${randomAds[0].offer.photos[i]}`;
-      mapCardPhotoFragment.appendChild(clonedMapCardPhoto);
-    }
-  }
-  clonedMapCardData.photos.appendChild(mapCardPhotoFragment);
-  clonedMapCardData.avatar.src = `${firstAd.author.avatar}`;
+  const mapCardPhotoFragment = renderCardPhotos(ClonedMapCardData.photos, firstAd.offer.photos);
+  ClonedMapCardData.photos.appendChild(mapCardPhotoFragment);
+  ClonedMapCardData.avatar.src = `${firstAd.author.avatar}`;
 
   mapCardFragment.appendChild(clonedMapCard);
   MAP.insertBefore(mapCardFragment, mapFiltersContainer);
@@ -161,4 +163,4 @@ const createCard = (randomAds) => {
 const randomAds = getRandomAdsList(AdsData.QUANTITY);
 showMap(MAP);
 createAds(randomAds);
-createCard(randomAds);
+createCard(randomAds[0]);
