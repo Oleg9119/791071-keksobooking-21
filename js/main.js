@@ -20,7 +20,8 @@ const AdsData = {
   PHOTOS_MIN_QUANTITY: 0
 };
 
-const MAP_WIDTH = document.querySelector(`.map`).clientWidth;
+const MAP = document.querySelector(`.map`);
+const MAP_WIDTH = MAP.clientWidth;
 
 const PinSize = {
   WIDTH: 50,
@@ -41,7 +42,7 @@ const getRandomValue = (min, max) => {
 };
 
 const getRandomSlicedArray = (array, min, max) => {
-  return array.slice(0, getRandomValue(min, max));
+  return array.slice(0, getRandomValue(min, max + 1));
 };
 
 const getRandomAd = (adIndex) => {
@@ -79,8 +80,7 @@ const getRandomAdsList = (adsQuantity) => {
   return randomAds;
 };
 
-const showMap = () => {
-  const map = document.querySelector(`.map `);
+const showMap = (map) => {
   map.classList.remove(`map--faded`);
 };
 
@@ -99,8 +99,68 @@ const createAds = (randomAdsList) => {
     mapPinFragment.appendChild(clonedMapPin);
   }
   mapPinsList.appendChild(mapPinFragment);
+  return mapPinsList;
+};
+
+const getLocalType = (type) => {
+  const types = {
+    palace: `Дворец`,
+    flat: `Квартира`,
+    house: `Дом`,
+    bungalow: `Бунгало`
+  };
+  return types[type];
+};
+
+const renderCardPhotos = (clonedPhotos, photosSources) => {
+  const cardPhotoFragment = document.createDocumentFragment();
+  const templatePhoto = clonedPhotos.querySelector(`img`);
+  clonedPhotos.removeChild(templatePhoto);
+  for (let i = 0; i < photosSources.length; i++) {
+    const clonedPhoto = templatePhoto.cloneNode(true);
+    clonedPhoto.src = `${photosSources[i]}`;
+    cardPhotoFragment.appendChild(clonedPhoto);
+  }
+  return cardPhotoFragment;
+};
+
+const createCard = (firstAd) => {
+  const mapFiltersContainer = document.querySelector(`.map__filters-container`);
+  const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+  const mapCardFragment = document.createDocumentFragment();
+  const clonedMapCard = mapCardTemplate.cloneNode(true);
+
+  const ClonedMapCardData = {
+    title: clonedMapCard.querySelector(`.popup__title`),
+    address: clonedMapCard.querySelector(`.popup__text--address`),
+    price: clonedMapCard.querySelector(`.popup__text--price`),
+    type: clonedMapCard.querySelector(`.popup__type`),
+    capacity: clonedMapCard.querySelector(`.popup__text--capacity`),
+    time: clonedMapCard.querySelector(`.popup__text--time`),
+    features: clonedMapCard.querySelector(`.popup__features`),
+    description: clonedMapCard.querySelector(`.popup__description`),
+    photos: clonedMapCard.querySelector(`.popup__photos`),
+    avatar: clonedMapCard.querySelector(`.popup__avatar`)
+  };
+
+  ClonedMapCardData.title.textContent = `${firstAd.offer.title}`;
+  ClonedMapCardData.address.textContent = `${firstAd.offer.address}`;
+  ClonedMapCardData.price.textContent = `${firstAd.offer.price}₽/ночь`;
+  ClonedMapCardData.type.textContent = `${getLocalType(firstAd.offer.type)}`;
+  ClonedMapCardData.capacity.textContent = `${firstAd.offer.rooms} комнаты для ${firstAd.offer.guests} гостей`;
+  ClonedMapCardData.time.textContent = `Заезд после ${firstAd.offer.checkin}, выезд до ${firstAd.offer.checkout}`;
+  ClonedMapCardData.features.textContent = `${firstAd.offer.features}`;
+  ClonedMapCardData.description.textContent = `${firstAd.offer.description}`;
+
+  const mapCardPhotoFragment = renderCardPhotos(ClonedMapCardData.photos, firstAd.offer.photos);
+  ClonedMapCardData.photos.appendChild(mapCardPhotoFragment);
+  ClonedMapCardData.avatar.src = `${firstAd.author.avatar}`;
+
+  mapCardFragment.appendChild(clonedMapCard);
+  MAP.insertBefore(mapCardFragment, mapFiltersContainer);
 };
 
 const randomAds = getRandomAdsList(AdsData.QUANTITY);
-showMap();
+showMap(MAP);
 createAds(randomAds);
+createCard(randomAds[0]);
