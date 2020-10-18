@@ -196,6 +196,7 @@ const activatePage = () => {
   setDisabledValue(mapForm, false);
   setDisabledValue(adForm, false);
   showMap(MAP);
+  createAds(randomAds);
   setAddress(adAddress);
 };
 
@@ -212,26 +213,25 @@ mapPinMain.addEventListener(`click`, () => {
 const roomsQuantity = adForm.querySelector(`#room_number`);
 const guestsQuantity = adForm.querySelector(`#capacity`);
 
-const validateRoomsAndGuests = () => {
+const validateRoomsAndGuests = (select) => {
   const roomsCount = roomsQuantity.value;
   const guestsCount = guestsQuantity.value;
   if (guestsCount > roomsCount) {
-    adForm.setCustomValidity(`Количество гостей не должно превышать количество комнат`);
+    select.setCustomValidity(`Количество гостей не должно превышать количество комнат`);
   } else {
-    adForm.setCustomValidity(``);
+    select.setCustomValidity(``);
   }
 };
 
-roomsQuantity.addEventListener(`change`, () => {
-  validateRoomsAndGuests();
+roomsQuantity.addEventListener(`change`, (evt) => {
+  validateRoomsAndGuests(evt.target);
 });
 
-guestsQuantity.addEventListener(`change`, () => {
-  validateRoomsAndGuests();
+guestsQuantity.addEventListener(`change`, (evt) => {
+  validateRoomsAndGuests(evt.target);
 });
 
 const randomAds = getRandomAdsList(AdsData.QUANTITY);
-createAds(randomAds);
 // createCard(randomAds[0]);
 setAddress(adAddress);
 setDisabledValue(mapForm, true);
