@@ -22,6 +22,7 @@ const AdsData = {
 
 const MAP = document.querySelector(`.map`);
 const MAP_WIDTH = MAP.clientWidth;
+const MAP_PIN_MAIN_TIP_HEIGHT = 22;
 
 const PinSize = {
   WIDTH: 50,
@@ -31,6 +32,16 @@ const PinSize = {
 const PinOffset = {
   X: PinSize.WIDTH / 2,
   Y: PinSize.HEIGHT
+};
+
+const MapPinMainSize = {
+  WIDTH: 65,
+  HEIGHT: 65
+};
+
+const MapPinMainOffset = {
+  X: MapPinMainSize.WIDTH / 2,
+  Y: MapPinMainSize.HEIGHT + MAP_PIN_MAIN_TIP_HEIGHT
 };
 
 const getRandomProperty = (array) => {
@@ -102,65 +113,126 @@ const createAds = (randomAdsList) => {
   return mapPinsList;
 };
 
-const getLocalType = (type) => {
-  const types = {
-    palace: `Дворец`,
-    flat: `Квартира`,
-    house: `Дом`,
-    bungalow: `Бунгало`
-  };
-  return types[type];
-};
+// const getLocalType = (type) => {
+//   const types = {
+//     palace: `Дворец`,
+//     flat: `Квартира`,
+//     house: `Дом`,
+//     bungalow: `Бунгало`
+//   };
+//   return types[type];
+// };
 
-const renderCardPhotos = (clonedPhotos, photosSources) => {
-  const cardPhotoFragment = document.createDocumentFragment();
-  const templatePhoto = clonedPhotos.querySelector(`img`);
-  clonedPhotos.removeChild(templatePhoto);
-  for (let i = 0; i < photosSources.length; i++) {
-    const clonedPhoto = templatePhoto.cloneNode(true);
-    clonedPhoto.src = `${photosSources[i]}`;
-    cardPhotoFragment.appendChild(clonedPhoto);
+// const renderCardPhotos = (clonedPhotos, photosSources) => {
+//   const cardPhotoFragment = document.createDocumentFragment();
+//   const templatePhoto = clonedPhotos.querySelector(`img`);
+//   clonedPhotos.removeChild(templatePhoto);
+//   for (let i = 0; i < photosSources.length; i++) {
+//     const clonedPhoto = templatePhoto.cloneNode(true);
+//     clonedPhoto.src = `${photosSources[i]}`;
+//     cardPhotoFragment.appendChild(clonedPhoto);
+//   }
+//   return cardPhotoFragment;
+// };
+
+// const createCard = (firstAd) => {
+//   const mapFiltersContainer = document.querySelector(`.map__filters-container`);
+//   const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+//   const mapCardFragment = document.createDocumentFragment();
+//   const clonedMapCard = mapCardTemplate.cloneNode(true);
+
+//   const clonedMapCardTitle = clonedMapCard.querySelector(`.popup__title`);
+//   const clonedMapCardAddress = clonedMapCard.querySelector(`.popup__text--address`);
+//   const clonedMapCardPrice = clonedMapCard.querySelector(`.popup__text--price`);
+//   const clonedMapCardType = clonedMapCard.querySelector(`.popup__type`);
+//   const clonedMapCardCapacity = clonedMapCard.querySelector(`.popup__text--capacity`);
+//   const clonedMapCardTime = clonedMapCard.querySelector(`.popup__text--time`);
+//   const clonedMapCardFeatures = clonedMapCard.querySelector(`.popup__features`);
+//   const clonedMapCardDescription = clonedMapCard.querySelector(`.popup__description`);
+//   const clonedMapCardPhotos = clonedMapCard.querySelector(`.popup__photos`);
+//   const clonedMapCardAvatar = clonedMapCard.querySelector(`.popup__avatar`);
+
+//   clonedMapCardTitle.textContent = `${firstAd.offer.title}`;
+//   clonedMapCardAddress.textContent = `${firstAd.offer.address}`;
+//   clonedMapCardPrice.textContent = `${firstAd.offer.price}₽/ночь`;
+//   clonedMapCardType.textContent = `${getLocalType(firstAd.offer.type)}`;
+//   clonedMapCardCapacity.textContent = `${firstAd.offer.rooms} комнаты для ${firstAd.offer.guests} гостей`;
+//   clonedMapCardTime.textContent = `Заезд после ${firstAd.offer.checkin}, выезд до ${firstAd.offer.checkout}`;
+//   clonedMapCardFeatures.textContent = `${firstAd.offer.features}`;
+//   clonedMapCardDescription.textContent = `${firstAd.offer.description}`;
+
+//   const mapCardPhotoFragment = renderCardPhotos(clonedMapCardPhotos, firstAd.offer.photos);
+//   clonedMapCardPhotos.appendChild(mapCardPhotoFragment);
+//   clonedMapCardAvatar.src = `${firstAd.author.avatar}`;
+
+//   mapCardFragment.appendChild(clonedMapCard);
+//   MAP.insertBefore(mapCardFragment, mapFiltersContainer);
+// };
+
+const adForm = document.querySelector(`.ad-form`);
+const adAddress = adForm.querySelector(`input[name='address']`);
+const mapPinMain = document.querySelector(`.map__pin--main`);
+const mapForm = document.querySelector(`.map__filters`);
+
+const setDisabledValue = (form, isDisabled) => {
+  const formChildren = form.children;
+  for (let i = 0; i < formChildren.length; i++) {
+    formChildren[i].disabled = isDisabled;
   }
-  return cardPhotoFragment;
 };
 
-const createCard = (firstAd) => {
-  const mapFiltersContainer = document.querySelector(`.map__filters-container`);
-  const mapCardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
-  const mapCardFragment = document.createDocumentFragment();
-  const clonedMapCard = mapCardTemplate.cloneNode(true);
-
-  const ClonedMapCardData = {
-    title: clonedMapCard.querySelector(`.popup__title`),
-    address: clonedMapCard.querySelector(`.popup__text--address`),
-    price: clonedMapCard.querySelector(`.popup__text--price`),
-    type: clonedMapCard.querySelector(`.popup__type`),
-    capacity: clonedMapCard.querySelector(`.popup__text--capacity`),
-    time: clonedMapCard.querySelector(`.popup__text--time`),
-    features: clonedMapCard.querySelector(`.popup__features`),
-    description: clonedMapCard.querySelector(`.popup__description`),
-    photos: clonedMapCard.querySelector(`.popup__photos`),
-    avatar: clonedMapCard.querySelector(`.popup__avatar`)
-  };
-
-  ClonedMapCardData.title.textContent = `${firstAd.offer.title}`;
-  ClonedMapCardData.address.textContent = `${firstAd.offer.address}`;
-  ClonedMapCardData.price.textContent = `${firstAd.offer.price}₽/ночь`;
-  ClonedMapCardData.type.textContent = `${getLocalType(firstAd.offer.type)}`;
-  ClonedMapCardData.capacity.textContent = `${firstAd.offer.rooms} комнаты для ${firstAd.offer.guests} гостей`;
-  ClonedMapCardData.time.textContent = `Заезд после ${firstAd.offer.checkin}, выезд до ${firstAd.offer.checkout}`;
-  ClonedMapCardData.features.textContent = `${firstAd.offer.features}`;
-  ClonedMapCardData.description.textContent = `${firstAd.offer.description}`;
-
-  const mapCardPhotoFragment = renderCardPhotos(ClonedMapCardData.photos, firstAd.offer.photos);
-  ClonedMapCardData.photos.appendChild(mapCardPhotoFragment);
-  ClonedMapCardData.avatar.src = `${firstAd.author.avatar}`;
-
-  mapCardFragment.appendChild(clonedMapCard);
-  MAP.insertBefore(mapCardFragment, mapFiltersContainer);
+const setAddress = (address) => {
+  const mapPinMainXOffset = parseInt(mapPinMain.style.left, 10) + MapPinMainOffset.X;
+  const mapPinMainYOffset = parseInt(mapPinMain.style.top, 10) + MapPinMainOffset.Y;
+  address.value = `${parseInt(mapPinMainXOffset, 10)}, ${parseInt(mapPinMainYOffset, 10)}`;
 };
+
+const activateForm = (form) => {
+  form.classList.remove(`ad-form--disabled`);
+};
+
+const activatePage = () => {
+  activateForm(adForm);
+  setDisabledValue(mapForm, false);
+  setDisabledValue(adForm, false);
+  showMap(MAP);
+  createAds(randomAds);
+  setAddress(adAddress);
+};
+
+mapPinMain.addEventListener(`mousedown`, (evt) => {
+  if (evt.button === 0) {
+    activatePage();
+  }
+});
+
+mapPinMain.addEventListener(`click`, () => {
+  activatePage();
+});
+
+const roomsQuantity = adForm.querySelector(`#room_number`);
+const guestsQuantity = adForm.querySelector(`#capacity`);
+
+const validateRoomsAndGuests = (select) => {
+  const roomsCount = roomsQuantity.value;
+  const guestsCount = guestsQuantity.value;
+  if (guestsCount > roomsCount) {
+    select.setCustomValidity(`Количество гостей не должно превышать количество комнат`);
+  } else {
+    select.setCustomValidity(``);
+  }
+};
+
+roomsQuantity.addEventListener(`change`, (evt) => {
+  validateRoomsAndGuests(evt.target);
+});
+
+guestsQuantity.addEventListener(`change`, (evt) => {
+  validateRoomsAndGuests(evt.target);
+});
 
 const randomAds = getRandomAdsList(AdsData.QUANTITY);
-showMap(MAP);
-createAds(randomAds);
-createCard(randomAds[0]);
+// createCard(randomAds[0]);
+setAddress(adAddress);
+setDisabledValue(mapForm, true);
+setDisabledValue(adForm, true);
