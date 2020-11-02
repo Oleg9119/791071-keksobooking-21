@@ -2,6 +2,8 @@
 
 (() => {
 
+  const MAP = document.querySelector(`.map`);
+
   window.renderCardPhotos = (clonedPhotos, photosSources) => {
     const cardPhotoFragment = document.createDocumentFragment();
     const templatePhoto = clonedPhotos.querySelector(`img`);
@@ -57,7 +59,7 @@
   };
 
   window.closeCard = () => {
-    document.removeEventListener(`keydown`, onDocumentPressEsc);
+    document.removeEventListener(`keydown`, window.onDocumentPressEsc);
     const card = MAP.querySelector(`.map__card`);
     if (card) {
       card.parentNode.removeChild(card);
