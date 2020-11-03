@@ -1,29 +1,29 @@
 'use strict';
 
 (() => {
-
   const ADS_QUANTITY = 8;
   const MAP_WIDTH = document.querySelector(`.map`).clientWidth;
 
-  window.getRandomAd = (adIndex) => {
-    const AdsData = {
-      LOCATION_X_MIN: 0,
-      LOCATION_Y_MIN: 130,
-      LOCATION_Y_MAX: 630,
-      PRICE_MIN: 100,
-      PRICE_MAX: 500,
-      TYPES: [`palace`, `flat`, `house`, `bungalow`],
-      ROOMS_MIN_QUANTITY: 1,
-      ROOMS_MAX_QUANTITY: 5,
-      GUESTS_MIN_QUANTITY: 1,
-      GUESTS_MAX_QUANTITY: 5,
-      CHECKINS: [`12:00`, `13:00`, `14:00`],
-      CHECKOUTS: [`12:00`, `13:00`, `14:00`],
-      FEATURES: [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`],
-      FEATURES_MIN_QUANTITY: 0,
-      PHOTOS: [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`],
-      PHOTOS_MIN_QUANTITY: 0
-    };
+  const AdsData = {
+    LOCATION_X_MIN: 0,
+    LOCATION_Y_MIN: 130,
+    LOCATION_Y_MAX: 630,
+    PRICE_MIN: 100,
+    PRICE_MAX: 500,
+    TYPES: [`palace`, `flat`, `house`, `bungalow`],
+    ROOMS_MIN_QUANTITY: 1,
+    ROOMS_MAX_QUANTITY: 5,
+    GUESTS_MIN_QUANTITY: 1,
+    GUESTS_MAX_QUANTITY: 5,
+    CHECKINS: [`12:00`, `13:00`, `14:00`],
+    CHECKOUTS: [`12:00`, `13:00`, `14:00`],
+    FEATURES: [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`],
+    FEATURES_MIN_QUANTITY: 0,
+    PHOTOS: [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`],
+    PHOTOS_MIN_QUANTITY: 0
+  };
+
+  const getRandomAd = (adIndex) => {
     const location = {
       x: window.getRandomValue(AdsData.LOCATION_X_MIN, MAP_WIDTH),
       y: window.getRandomValue(AdsData.LOCATION_Y_MIN, AdsData.LOCATION_Y_MAX)
@@ -50,13 +50,13 @@
     return ad;
   };
 
-  window.getRandomAdsList = (adsQuantity) => {
+  const getRandomAdsList = (adsQuantity) => {
     const randomAds = [];
     for (let i = 1; i <= adsQuantity; i++) {
-      randomAds.push(window.getRandomAd(i));
+      randomAds.push(getRandomAd(i));
     }
     return randomAds;
   };
 
-  window.randomAds = window.getRandomAdsList(ADS_QUANTITY);
+  window.randomAds = getRandomAdsList(ADS_QUANTITY);
 })();

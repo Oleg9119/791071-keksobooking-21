@@ -1,7 +1,6 @@
 'use strict';
 
 (() => {
-
   const PinSize = {
     WIDTH: 50,
     HEIGHT: 70
@@ -23,13 +22,12 @@
     clonedMapPinImage.alt = `${pinData.offer.title}`;
 
     clonedMapPin.addEventListener(`click`, () => {
-      window.closeCard();
-      window.createCard(pinData);
+      window.card.closeCard();
+      window.card.createCard(pinData);
       document.addEventListener(`keydown`, window.onDocumentPressEsc);
       const closeButton = document.querySelector(`.popup__close`);
       closeButton.addEventListener(`click`, window.onClickCloseButton);
     });
     return clonedMapPin;
   };
-
 })();

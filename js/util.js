@@ -16,12 +16,18 @@
   window.onDocumentPressEsc = (evt) => {
     if (evt.key === `Escape`) {
       evt.preventDefault();
-      window.closeCard();
+      window.card.closeCard();
     }
   };
 
   window.onClickCloseButton = () => {
-    window.closeCard();
+    window.card.closeCard();
   };
 
+  window.setDisabledValue = (form, isDisabled) => {
+    const formChildren = form.children;
+    for (let i = 0; i < formChildren.length; i++) {
+      formChildren[i].disabled = isDisabled;
+    }
+  };
 })();

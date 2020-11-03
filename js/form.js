@@ -1,7 +1,6 @@
 'use strict';
 
 (() => {
-
   const MAP_PIN_MAIN_TIP_HEIGHT = 22;
 
   const FormsData = {
@@ -20,23 +19,18 @@
   };
 
   const adForm = document.querySelector(`.ad-form`);
+  const adAddress = adForm.querySelector(`input[name='address']`);
   const mapPinMain = document.querySelector(`.map__pin--main`);
 
-  window.setDisabledValue = (form, isDisabled) => {
-    const formChildren = form.children;
-    for (let i = 0; i < formChildren.length; i++) {
-      formChildren[i].disabled = isDisabled;
+  window.form = {
+    setAddress: () => {
+      const mapPinMainXOffset = parseInt(mapPinMain.style.left, 10) + MapPinMainOffset.X;
+      const mapPinMainYOffset = parseInt(mapPinMain.style.top, 10) + MapPinMainOffset.Y;
+      adAddress.value = `${parseInt(mapPinMainXOffset, 10)}, ${parseInt(mapPinMainYOffset, 10)}`;
+    },
+    activateForm: () => {
+      adForm.classList.remove(`ad-form--disabled`);
     }
-  };
-
-  window.setAddress = (address) => {
-    const mapPinMainXOffset = parseInt(mapPinMain.style.left, 10) + MapPinMainOffset.X;
-    const mapPinMainYOffset = parseInt(mapPinMain.style.top, 10) + MapPinMainOffset.Y;
-    address.value = `${parseInt(mapPinMainXOffset, 10)}, ${parseInt(mapPinMainYOffset, 10)}`;
-  };
-
-  window.activateForm = (form) => {
-    form.classList.remove(`ad-form--disabled`);
   };
 
   const housingType = adForm.querySelector(`#type`);
