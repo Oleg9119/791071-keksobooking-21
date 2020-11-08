@@ -13,6 +13,10 @@
       onSuccess(xhr.response);
     });
 
+    xhr.addEventListener(`error`, () => {
+      onError();
+    });
+
     xhr.send();
   };
 })();
