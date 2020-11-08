@@ -8,7 +8,8 @@ const activatePage = () => {
   window.form.activateForm();
   window.setDisabledValue(mapForm, false);
   window.setDisabledValue(adForm, false);
-  window.map.createAds(window.randomAds);
+  window.download(window.onLoad, window.onError);
+  // window.map.createAds(window.randomAds);
   window.map.activateMap();
   window.form.setAddress();
 };

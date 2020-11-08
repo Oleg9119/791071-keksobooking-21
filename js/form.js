@@ -95,4 +95,11 @@
       timeIn.value = `14:00`;
     }
   });
+
+  adForm.addEventListener(`submit`, (evt) => {
+    window.upload(new FormData(adForm), () => {
+      // console.log(`отправлены данные на сервер`);
+    });
+    evt.preventDefault();
+  });
 })();
