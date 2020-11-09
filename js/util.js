@@ -17,6 +17,7 @@
     if (evt.key === `Escape`) {
       evt.preventDefault();
       window.card.closeCard();
+      window.closeErrorMessage();
     }
   };
 
