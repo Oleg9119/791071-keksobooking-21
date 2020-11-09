@@ -22,6 +22,7 @@
   const adAddress = adForm.querySelector(`input[name='address']`);
   const mapPinMain = document.querySelector(`.map__pin--main`);
   const adFormReset = adForm.querySelector(`.ad-form__reset`);
+  const mapForm = document.querySelector(`.map__filters`);
 
   window.form = {
     setAddress: () => {
