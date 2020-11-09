@@ -9,6 +9,11 @@
 
     xhr.addEventListener(`load`, () => {
       onSuccess(xhr.response);
+      window.onUploadSuccess();
+    });
+
+    xhr.addEventListener(`error`, () => {
+      window.onUploadError();
     });
 
     xhr.open(`POST`, URL);

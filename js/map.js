@@ -2,6 +2,9 @@
 
 (() => {
   const MAP = document.querySelector(`.map`);
+  const mapPins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+
+  console.log(mapPins)
 
   window.map = {
     activateMap: () => {

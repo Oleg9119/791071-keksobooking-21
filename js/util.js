@@ -18,7 +18,14 @@
       evt.preventDefault();
       window.card.closeCard();
       window.closeErrorMessage();
+      window.closeSuccessMessage();
+      window.closeErrorUploadMessage();
     }
+  };
+
+  window.onBodyClick = () => {
+    window.closeSuccessMessage();
+    window.closeErrorUploadMessage();
   };
 
   window.onClickCloseButton = () => {
@@ -29,6 +36,15 @@
     const formChildren = form.children;
     for (let i = 0; i < formChildren.length; i++) {
       formChildren[i].disabled = isDisabled;
+    }
+  };
+
+  window.deactivateMap = () => {
+    const map = document.querySelector(`.map`);
+    const mapPins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    map.classList.add(`map--faded`);
+    for (let i = 0; i < mapPins.length; i++) {
+      mapPins[i].style.display = `none`;
     }
   };
 })();

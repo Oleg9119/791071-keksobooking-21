@@ -21,6 +21,7 @@
   const adForm = document.querySelector(`.ad-form`);
   const adAddress = adForm.querySelector(`input[name='address']`);
   const mapPinMain = document.querySelector(`.map__pin--main`);
+  const adFormReset = adForm.querySelector(`.ad-form__reset`);
 
   window.form = {
     setAddress: () => {
@@ -98,8 +99,16 @@
 
   adForm.addEventListener(`submit`, (evt) => {
     window.upload(new FormData(adForm), () => {
-      // console.log(`отправлены данные на сервер`);
+      window.deactivateMap();
+      window.setDisabledValue(mapForm, true);
+      window.setDisabledValue(adForm, true);
     });
     evt.preventDefault();
+  });
+
+  adFormReset.addEventListener(`click`, () => {
+    window.deactivateMap();
+    window.setDisabledValue(mapForm, true);
+    window.setDisabledValue(adForm, true);
   });
 })();
