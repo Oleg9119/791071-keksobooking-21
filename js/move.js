@@ -18,8 +18,6 @@
     Y_MAX: 630
   };
 
-  const mapCoordinates = MAP.getBoundingClientRect();
-
   const MapPinMainLimits = {
     TOP: MapPinMainCoordinates.Y_MIN - (MapPinMainSize.HEIGHT + MAP_PIN_MAIN_TIP_HEIGHT),
     BOTTOM: MapPinMainCoordinates.Y_MAX - (MapPinMainSize.HEIGHT + MAP_PIN_MAIN_TIP_HEIGHT),
@@ -29,6 +27,8 @@
 
   mapPinMain.addEventListener(`mousedown`, (evt) => {
     evt.preventDefault();
+
+    const mapCoordinates = MAP.getBoundingClientRect();
 
     const onMouseMove = (moveEvt) => {
       moveEvt.preventDefault();
@@ -53,6 +53,7 @@
       } else {
         mapPinMain.style.top = coordinates.y + `px`;
       }
+      window.form.setAddress();
     };
 
     const onMouseUp = (upEvt) => {
