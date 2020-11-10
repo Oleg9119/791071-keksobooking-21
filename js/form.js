@@ -97,9 +97,13 @@
   });
 
   adForm.addEventListener(`submit`, (evt) => {
-    window.upload(new FormData(adForm), () => {
-      // console.log(`отправлены данные на сервер`);
-    });
     evt.preventDefault();
+    window.upload(new FormData(adForm), () => {
+      window.deactivatePage();
+    });
+  });
+
+  adForm.addEventListener(`reset`, () => {
+    window.deactivatePage();
   });
 })();
