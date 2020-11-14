@@ -5,11 +5,10 @@ const mapPinMain = document.querySelector(`.map__pin--main`);
 const mapForm = document.querySelector(`.map__filters`);
 
 const activatePage = () => {
-  window.form.activateForm();
+  window.form.activate();
   window.setDisabledValue(mapForm, false);
   window.setDisabledValue(adForm, false);
-  window.download(window.onLoad, window.onError);
-  // window.map.createAds(window.randomAds);
+  window.download(window.onLoad.showPins, window.onError);
   window.map.activateMap();
   window.form.setAddress();
 };

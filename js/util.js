@@ -26,6 +26,12 @@
     }
   };
 
+  window.onErrorButtonClick = () => {
+    const closeUploadErrorButton = document.querySelector(`.error__button`);
+    closeUploadErrorButton.removeEventListener(`click`, window.onErrorButtonClick);
+    window.closeErrorUploadMessage();
+  };
+
   window.onBodyClick = () => {
     window.closeSuccessMessage();
     window.closeErrorUploadMessage();
@@ -62,5 +68,6 @@
     window.deactivateMap();
     window.setDisabledValue(mapForm, true);
     window.setDisabledValue(adForm, true);
+    window.form.deactivate();
   };
 })();

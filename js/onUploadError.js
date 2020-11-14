@@ -10,7 +10,7 @@
 
     main.appendChild(clonedUploadError);
 
-    closeUploadErrorButton.addEventListener(`click`, window.closeErrorUploadMessage);
+    closeUploadErrorButton.addEventListener(`click`, window.onErrorButtonClick);
     document.addEventListener(`keydown`, window.onDocumentPressEsc);
     document.addEventListener(`click`, window.onBodyClick);
   };
