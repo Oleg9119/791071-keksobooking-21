@@ -1,9 +1,9 @@
 'use strict';
 
 (() => {
-  const MAP = document.querySelector(`.map`);
   const MAP_PIN_MAIN_TIP_HEIGHT = 22;
 
+  const map = document.querySelector(`.map`);
   const mapPinMain = document.querySelector(`.map__pin--main`);
 
   const MapPinMainSize = {
@@ -28,12 +28,12 @@
   mapPinMain.addEventListener(`mousedown`, (evt) => {
     evt.preventDefault();
 
-    const mapCoordinates = MAP.getBoundingClientRect();
+    const mapCoordinates = map.getBoundingClientRect();
 
     const onMouseMove = (moveEvt) => {
       moveEvt.preventDefault();
 
-      let coordinates = {
+      const coordinates = {
         x: moveEvt.clientX - mapCoordinates.x - MapPinMainSize.WIDTH / 2,
         y: moveEvt.clientY - mapCoordinates.y - MapPinMainSize.HEIGHT / 2
       };

@@ -13,6 +13,11 @@
     HEIGHT: 65
   };
 
+  const MapPinMainCenter = {
+    X: MapPinMainSize.WIDTH / 2,
+    Y: MapPinMainSize.HEIGHT / 2
+  };
+
   const MapPinMainOffset = {
     X: MapPinMainSize.WIDTH / 2,
     Y: MapPinMainSize.HEIGHT + MAP_PIN_MAIN_TIP_HEIGHT
@@ -24,15 +29,26 @@
 
   window.form = {
     setAddress: () => {
-      const mapPinMainXOffset = parseInt(mapPinMain.style.left, 10) + MapPinMainOffset.X;
-      const mapPinMainYOffset = parseInt(mapPinMain.style.top, 10) + MapPinMainOffset.Y;
-      adAddress.value = `${parseInt(mapPinMainXOffset, 10)}, ${parseInt(mapPinMainYOffset, 10)}`;
+      const mapPinMainInactiveX = parseInt(mapPinMain.style.left, 10) + MapPinMainCenter.X;
+      const mapPinMainInactiveY = parseInt(mapPinMain.style.top, 10) + MapPinMainCenter.Y;
+      const mapPinMainActiveXOffset = parseInt(mapPinMain.style.left, 10) + MapPinMainOffset.X;
+      const mapPinMainActiveYOffset = parseInt(mapPinMain.style.top, 10) + MapPinMainOffset.Y;
+      if (adForm.classList.contains(`ad-form--disabled`)) {
+        adAddress.value = `${parseInt(mapPinMainInactiveX, 10)}, ${parseInt(mapPinMainInactiveY, 10)}`;
+      } else {
+        adAddress.value = `${parseInt(mapPinMainActiveXOffset, 10)}, ${parseInt(mapPinMainActiveYOffset, 10)}`;
+      }
     },
-    activateForm: () => {
+    activate: () => {
       adForm.classList.remove(`ad-form--disabled`);
+    },
+    deactivate: () => {
+      adForm.reset();
+      adForm.classList.add(`ad-form--disabled`);
     }
   };
 
+  const adTitle = adForm.querySelector(`#title`);
   const housingType = adForm.querySelector(`#type`);
   const nightPrice = adForm.querySelector(`#price`);
   const roomsQuantity = adForm.querySelector(`#room_number`);
@@ -40,24 +56,35 @@
   const timeIn = adForm.querySelector(`#timein`);
   const timeOut = adForm.querySelector(`#timeout`);
 
-  const validateRoomsAndGuests = (select) => {
-    const roomsCount = roomsQuantity.value;
-    const guestsCount = guestsQuantity.value;
-    if (guestsCount > roomsCount) {
-      select.setCustomValidity(`Количество гостей не должно превышать количество комнат`);
-    } else if (roomsCount === FormsData.ROOMS_MAX_QUANTITY && guestsCount !== FormsData.NOT_FOR_GUESTS_PLACES) {
-      select.setCustomValidity(`100 комнат не предназначены для гостей`);
-    } else {
-      select.setCustomValidity(``);
+  const validateTitleLength = (input) => {
+    const adTitleLength = adTitle.value.length;
+    if (adTitleLength >= 100) {
+      input.setCustomValidity(`Заголовок объявления не должен превышать 100 символов`);
     }
   };
 
-  roomsQuantity.addEventListener(`change`, (evt) => {
-    validateRoomsAndGuests(evt.target);
+  adTitle.addEventListener(`input`, (evt) => {
+    validateTitleLength(evt.target);
   });
 
-  guestsQuantity.addEventListener(`change`, (evt) => {
-    validateRoomsAndGuests(evt.target);
+  const validateRoomsAndGuests = () => {
+    const roomsCount = roomsQuantity.value;
+    const guestsCount = guestsQuantity.value;
+    if (guestsCount > roomsCount) {
+      roomsQuantity.setCustomValidity(`Количество гостей не должно превышать количество комнат`);
+    } else if (roomsCount === FormsData.ROOMS_MAX_QUANTITY && guestsCount !== FormsData.NOT_FOR_GUESTS_PLACES) {
+      roomsQuantity.setCustomValidity(`100 комнат не предназначены для гостей`);
+    } else {
+      roomsQuantity.setCustomValidity(``);
+    }
+  };
+
+  roomsQuantity.addEventListener(`change`, () => {
+    validateRoomsAndGuests();
+  });
+
+  guestsQuantity.addEventListener(`change`, () => {
+    validateRoomsAndGuests();
   });
 
   housingType.addEventListener(`change`, (evt) => {
@@ -105,5 +132,8 @@
 
   adForm.addEventListener(`reset`, () => {
     window.deactivatePage();
+    nightPrice.placeholder = `1000`;
   });
+
+  window.form.setAddress();
 })();

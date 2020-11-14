@@ -21,9 +21,10 @@
     clonedMapPinImage.src = `${pinData.author.avatar}`;
     clonedMapPinImage.alt = `${pinData.offer.title}`;
 
-    clonedMapPin.addEventListener(`click`, () => {
+    clonedMapPin.addEventListener(`click`, (evt) => {
       window.card.closeCard();
       window.card.createCard(pinData);
+      window.map.activatePin(evt.currentTarget);
       document.addEventListener(`keydown`, window.onDocumentPressEsc);
       const closeButton = document.querySelector(`.popup__close`);
       closeButton.addEventListener(`click`, window.onClickCloseButton);
