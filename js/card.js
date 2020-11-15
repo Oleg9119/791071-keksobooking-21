@@ -1,6 +1,13 @@
 'use strict';
 
 (() => {
+  const TYPES_OF_HOUSING_MAP = { // это словарь, а не перечисление
+    palace: `Дворец`,
+    flat: `Квартира`,
+    house: `Дом`,
+    bungalow: `Бунгало`
+  };
+
   const map = document.querySelector(`.map`);
 
   const renderCardPhotos = (clonedPhotos, photosSources) => {
@@ -16,12 +23,6 @@
   };
 
   const getLocalType = (type) => {
-    const TYPES_OF_HOUSING_MAP = { // это словарь, а не перечисление
-      palace: `Дворец`,
-      flat: `Квартира`,
-      house: `Дом`,
-      bungalow: `Бунгало`
-    };
     return TYPES_OF_HOUSING_MAP[type];
   };
 

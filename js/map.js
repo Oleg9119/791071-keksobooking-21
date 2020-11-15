@@ -1,6 +1,13 @@
 'use strict';
 
 (() => {
+  const ADS_MAX_COUNT = 5;
+
+  const MapPinMain = {
+    WIDTH: 65,
+    HEIGHT: 65,
+    TIP_HEIGHT: 22
+  };
 
   window.map = {
     activateMap: () => {
@@ -8,7 +15,6 @@
       map.classList.remove(`map--faded`);
     },
     createAds: (ads) => {
-      const ADS_MAX_COUNT = 5;
       const mapPinsList = document.querySelector(`.map__pins`);
       const mapPinFragment = document.createDocumentFragment();
 
@@ -33,6 +39,9 @@
       for (let i = 0; i < mapPins.length; i++) {
         mapPins[i].remove();
       }
+    },
+    getMainPinSize: () => {
+      return MapPinMain;
     }
   };
 })();

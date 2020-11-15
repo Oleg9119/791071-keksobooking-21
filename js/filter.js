@@ -27,7 +27,7 @@
     features: new Set()
   };
 
-  const elementsToFiltersMap = {
+  const ELEMENTS_TO_FILTERS_MAP = { //  это не перечисление, а словарь
     'housing-type': `type`,
     'housing-price': `price`,
     'housing-rooms': `rooms`,
@@ -95,13 +95,13 @@
   };
 
   const onSelectChange = (evt) => {
-    const filterName = elementsToFiltersMap[evt.target.name];
+    const filterName = ELEMENTS_TO_FILTERS_MAP[evt.target.name];
     chosenFilters[filterName] = evt.target.value;
     window.debounce(createFilteredAds);
   };
 
   const onCheckboxChange = (evt) => {
-    const filterName = elementsToFiltersMap[evt.target.id];
+    const filterName = ELEMENTS_TO_FILTERS_MAP[evt.target.id];
     chosenFilters[filterName] = evt.target.id;
     checkChosenFeatures(chosenFilters.features, filterName);
     window.debounce(createFilteredAds);

@@ -1,15 +1,8 @@
 'use strict';
 
 (() => {
-  const MAP_PIN_MAIN_TIP_HEIGHT = 22;
-
   const map = document.querySelector(`.map`);
   const mapPinMain = document.querySelector(`.map__pin--main`);
-
-  const MapPinMainSize = {
-    WIDTH: 65,
-    HEIGHT: 65
-  };
 
   const MapPinMainCoordinates = {
     X_MIN: 0,
@@ -19,10 +12,10 @@
   };
 
   const MapPinMainLimits = {
-    TOP: MapPinMainCoordinates.Y_MIN - (MapPinMainSize.HEIGHT + MAP_PIN_MAIN_TIP_HEIGHT),
-    BOTTOM: MapPinMainCoordinates.Y_MAX - (MapPinMainSize.HEIGHT + MAP_PIN_MAIN_TIP_HEIGHT),
-    LEFT: MapPinMainCoordinates.X_MIN - MapPinMainSize.WIDTH / 2,
-    RIGHT: MapPinMainCoordinates.X_MAX - MapPinMainSize.WIDTH / 2
+    TOP: MapPinMainCoordinates.Y_MIN - (window.map.getMainPinSize().HEIGHT + window.map.getMainPinSize().TIP_HEIGHT),
+    BOTTOM: MapPinMainCoordinates.Y_MAX - (window.map.getMainPinSize().HEIGHT + window.map.getMainPinSize().TIP_HEIGHT),
+    LEFT: MapPinMainCoordinates.X_MIN - window.map.getMainPinSize().WIDTH / 2,
+    RIGHT: MapPinMainCoordinates.X_MAX - window.map.getMainPinSize().WIDTH / 2
   };
 
   mapPinMain.addEventListener(`mousedown`, (evt) => {
@@ -34,8 +27,8 @@
       moveEvt.preventDefault();
 
       const coordinates = {
-        x: moveEvt.clientX - mapCoordinates.x - MapPinMainSize.WIDTH / 2,
-        y: moveEvt.clientY - mapCoordinates.y - MapPinMainSize.HEIGHT / 2
+        x: moveEvt.clientX - mapCoordinates.x - window.map.getMainPinSize().WIDTH / 2,
+        y: moveEvt.clientY - mapCoordinates.y - window.map.getMainPinSize().HEIGHT / 2
       };
 
       if (coordinates.x < MapPinMainLimits.LEFT) {
