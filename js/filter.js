@@ -4,6 +4,13 @@
   const MIN_PRICE = 10000;
   const MAX_PRICE = 50000;
 
+  const PricesRanges = {
+    ANY: `any`,
+    LOW: `low`,
+    MIDDLE: `middle`,
+    HIGH: `high`
+  };
+
   const mapFilters = document.querySelector(`.map__filters`);
   const housingTypeFilter = mapFilters.querySelector(`#housing-type`);
 
@@ -46,13 +53,13 @@
 
   const checkPrice = (filterType, filterData) => {
     switch (filterType) {
-      case `any`:
+      case PricesRanges.ANY:
         return true;
-      case `low`:
+      case PricesRanges.LOW:
         return filterData < MIN_PRICE;
-      case `middle`:
+      case PricesRanges.MIDDLE:
         return filterData >= MIN_PRICE && filterData < MAX_PRICE;
-      case `high`:
+      case PricesRanges.HIGH:
         return filterData >= MAX_PRICE;
       default:
         return false;

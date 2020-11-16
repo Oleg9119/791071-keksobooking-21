@@ -6,6 +6,20 @@
     NOT_FOR_GUESTS_PLACES: `0`
   };
 
+  const MapPinMainDefaultIndents = {
+    LEFT: `570px`,
+    TOP: `375px`
+  };
+
+  const DEFAULT_NIGHT_PRICE = `1000`;
+
+  const NightPrices = {
+    BUNGALOW: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 10000
+  };
+
   const MapPinMainCenter = {
     X: window.map.getMainPinSize().WIDTH / 2,
     Y: window.map.getMainPinSize().HEIGHT / 2
@@ -29,8 +43,8 @@
     if (mapCard) {
       mapCard.style.display = `none`;
     }
-    mapPinMain.style.left = `570px`;
-    mapPinMain.style.top = `375px`;
+    mapPinMain.style.left = MapPinMainDefaultIndents.LEFT;
+    mapPinMain.style.top = MapPinMainDefaultIndents.TOP;
     for (let i = 0; i < mapPins.length; i++) {
       mapPins[i].style.display = `none`;
     }
@@ -60,6 +74,7 @@
       adForm.classList.remove(`ad-form--disabled`);
     },
     deactivate: () => {
+      mapForm.reset();
       adForm.reset();
       adForm.classList.add(`ad-form--disabled`);
     }
@@ -90,12 +105,13 @@
     const roomsCount = roomsQuantity.value;
     const guestsCount = guestsQuantity.value;
     if (guestsCount > roomsCount) {
-      roomsQuantity.setCustomValidity(`Количество гостей не должно превышать количество комнат`);
+      guestsQuantity.setCustomValidity(`Количество гостей не должно превышать количество комнат`);
     } else if (roomsCount === FormsData.ROOMS_MAX_QUANTITY && guestsCount !== FormsData.NOT_FOR_GUESTS_PLACES) {
       roomsQuantity.setCustomValidity(`100 комнат не предназначены для гостей`);
     } else if (roomsCount !== FormsData.ROOMS_MAX_QUANTITY && guestsCount === FormsData.NOT_FOR_GUESTS_PLACES) {
       roomsQuantity.setCustomValidity(`Не для гостей предназначены только 100 комнат`);
     } else {
+      guestsQuantity.setCustomValidity(``);
       roomsQuantity.setCustomValidity(``);
     }
   };
@@ -110,16 +126,16 @@
 
   housingType.addEventListener(`change`, (evt) => {
     if (evt.target.value === `flat`) {
-      nightPrice.min = 1000;
+      nightPrice.min = NightPrices.FLAT;
       nightPrice.placeholder = `1000`;
     } else if (evt.target.value === `bungalow`) {
-      nightPrice.min = 0;
+      nightPrice.min = NightPrices.BUNGALOW;
       nightPrice.placeholder = `0`;
     } else if (evt.target.value === `house`) {
-      nightPrice.min = 5000;
+      nightPrice.min = NightPrices.HOUSE;
       nightPrice.placeholder = `5000`;
     } else if (evt.target.value === `palace`) {
-      nightPrice.min = 10000;
+      nightPrice.min = NightPrices.PALACE;
       nightPrice.placeholder = `10000`;
     }
   });
@@ -153,7 +169,7 @@
 
   adForm.addEventListener(`reset`, () => {
     deactivatePage();
-    nightPrice.placeholder = `1000`;
+    nightPrice.placeholder = DEFAULT_NIGHT_PRICE;
   });
 
   window.form.setAddress();

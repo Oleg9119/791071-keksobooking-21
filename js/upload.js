@@ -2,6 +2,7 @@
 
 (() => {
   const URL = `https://21.javascript.pages.academy/keksobooking`;
+  const TYPE_OF_REQUEST = `POST`;
 
   window.upload = (data, onSuccess) => {
     const xhr = new XMLHttpRequest();
@@ -16,7 +17,7 @@
       window.onUploadError();
     });
 
-    xhr.open(`POST`, URL);
+    xhr.open(TYPE_OF_REQUEST, URL);
     xhr.send(data);
   };
 })();
