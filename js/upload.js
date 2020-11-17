@@ -1,23 +1,21 @@
 'use strict';
 
-(() => {
-  const URL = `https://21.javascript.pages.academy/keksobooking`;
-  const TYPE_OF_REQUEST = `POST`;
+const UPLOAD_URL = `https://21.javascript.pages.academy/keksobooking`;
+const TYPE_OF_REQUEST = `POST`;
 
-  window.upload = (data, onSuccess) => {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = `json`;
+window.upload = (data, onSuccess) => {
+  const xhr = new XMLHttpRequest();
+  xhr.responseType = `json`;
 
-    xhr.addEventListener(`load`, () => {
-      onSuccess(xhr.response);
-      window.onUploadSuccess();
-    });
+  xhr.addEventListener(`load`, () => {
+    onSuccess(xhr.response);
+    window.onUploadSuccess();
+  });
 
-    xhr.addEventListener(`error`, () => {
-      window.onUploadError();
-    });
+  xhr.addEventListener(`error`, () => {
+    window.onUploadError();
+  });
 
-    xhr.open(TYPE_OF_REQUEST, URL);
-    xhr.send(data);
-  };
-})();
+  xhr.open(TYPE_OF_REQUEST, UPLOAD_URL);
+  xhr.send(data);
+};
